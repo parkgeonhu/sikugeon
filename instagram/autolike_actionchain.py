@@ -49,35 +49,33 @@ source=driver.page_source
 
 soup = BeautifulSoup(source, 'lxml')
 
-print(entire.text)
-
 print(entire.get_attribute('innerHTML'))
 
-print(soup.text)
+time.sleep(5)
 
-like_btns = driver.find_elements_by_class_name("fr66n")
-
+for i in range(10):
+    time.sleep(1.5)
+    like_btns=driver.find_elements_by_class_name("fr66n")
+    like_btns[i].click()
+    print(like_btns)
 
 print("mmmmmmmmmmmmmmmmmmm")
 
 ##print(like_btn.get_attribute('innerHTML'))
 
-print(like_btns[0].click())
-print(like_btns[1].click())
 
 
-
-for like_btn in like_btns:
+##for like_btn in like_btns:
 ##    like_btn.click()
-    print(like_btn.get_attribute('innerHTML'))
-##    like_btn.clear()
-##    print()
-    print('----------------------------------------')
-##    driver.execute_script("arguments[0].click();", like_btn)
-##    time.sleep(2)
-
-
-##like_btn.click()
+##    print(like_btn.get_attribute('innerHTML'))
+####    like_btn.clear()
+####    print()
+##    print('----------------------------------------')
+####    driver.execute_script("arguments[0].click();", like_btn)
+####    time.sleep(2)
+##
+##
+####like_btn.click()
 
 
 
