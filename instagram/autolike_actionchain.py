@@ -51,13 +51,22 @@ soup = BeautifulSoup(source, 'lxml')
 
 print(entire.get_attribute('innerHTML'))
 
-time.sleep(5)
+time.sleep(3)
 
-for i in range(10):
+##driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+for i in range(100):
     time.sleep(1.5)
-    like_btns=driver.find_elements_by_class_name("fr66n")
-    like_btns[i].click()
-    print(like_btns)
+    driver.find_elements_by_css_selector('span.glyphsSpriteHeart__outline__24__grey_9.Szr5J')[0].click()
+    time.sleep(1.5)
+
+##for i in range(100):
+##    time.sleep(1.5)
+##    like_btns=driver.find_elements_by_class_name("fr66n")
+##    print(like_btns[i])
+##    like_btns[i].click()
+##    time.sleep(1.5)
+##    driver.execute_script("arguments[0].click();", like_btns[i])
 
 print("mmmmmmmmmmmmmmmmmmm")
 
