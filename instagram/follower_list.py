@@ -46,7 +46,7 @@ later_btn = driver.find_element_by_class_name("HoLwm")
 
 later_btn.click()
 
-driver.get("https://www.instagram.com/sikugeon")
+driver.get("https://www.instagram.com/geon__after")
 
 time.sleep(2)
 
@@ -59,11 +59,27 @@ follower_count= WebDriverWait(driver, 5).until(
 driver.find_element_by_css_selector('#react-root > section > main > div > header > section > ul > li:nth-child(2)').click()
 
 
-print(follower_count)
-
 dialog = driver.find_element_by_class_name("isgrP")
 
-##for i in range(10):
+last_height = driver.execute_script("return arguments[0].scrollHeight;", dialog)
+
+while True:
+    driver.execute_script("arguments[0].scrollTo(0, arguments[0].scrollHeight);", dialog)
+    time.sleep(2)
+
+    new_height = driver.execute_script("return arguments[0].scrollHeight;", dialog)
+    if new_height == last_height:
+        break
+    last_height = new_height
+
+
+
+follower_count=int(follower_count)
+print(follower_count)
+
+
+
+##for i in range(int(follower_count/8)):
 ##    driver.execute_script("arguments[0].scroll({top:10000});", dialog)
 ##    time.sleep(0.5)
 
@@ -84,7 +100,6 @@ follower_list=[]
 for follower in followers:
     follower_list.append(follower.text)
 
-print(follower_list)
 print(len(follower_list))
 
 ##scripts = soup.find_all('script')
