@@ -9,6 +9,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from selenium.webdriver.common.by import By
+
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
@@ -46,22 +48,26 @@ later_btn.click()
 
 driver.get("https://www.instagram.com/sikugeon")
 
+time.sleep(2)
 
+follower_count= WebDriverWait(driver, 5).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, '#react-root > section > main > div > header > section > ul > li:nth-child(2) a > span'))
+    ).text.replace(",","")
 
-
-driver.implicitly_wait(5)
 
 #팔로워 클릭
 driver.find_element_by_css_selector('#react-root > section > main > div > header > section > ul > li:nth-child(2)').click()
 
-driver.implicitly_wait(5)
+
+print(follower_count)
 
 dialog = driver.find_element_by_class_name("isgrP")
 
-for i in range(10):
-    driver.execute_script("arguments[0].scroll({top:10000});", dialog)
-    time.sleep(0.5)
+##for i in range(10):
+##    driver.execute_script("arguments[0].scroll({top:10000});", dialog)
+##    time.sleep(0.5)
 
+time.sleep(2)
 
 
 
@@ -79,7 +85,7 @@ for follower in followers:
     follower_list.append(follower.text)
 
 print(follower_list)
-
+print(len(follower_list))
 
 ##scripts = soup.find_all('script')
 
