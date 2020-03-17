@@ -19,6 +19,10 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 from credential import config
 from multiprocessing import Pool, Process, Queue
 
+
+SCROLL_PAUSE=0.5
+
+
 def get_driver():
     driver = webdriver.Chrome('../util/chromedriver.exe')
     driver.get("http://www.instagram.com/")
@@ -65,7 +69,7 @@ def get_follower_list(q1):
 
     while True:
         driver.execute_script("arguments[0].scrollTo(0, arguments[0].scrollHeight);", dialog)
-        time.sleep(2)
+        time.sleep(SCROLL_PAUSE)
 
         new_height = driver.execute_script("return arguments[0].scrollHeight;", dialog)
         if new_height == last_height:
@@ -91,7 +95,6 @@ def get_follower_list(q1):
 
 def get_following_list(q2):
     driver=get_driver()
-    print(1)
     driver.get("https://www.instagram.com/geon__after")
     time.sleep(2)
 
@@ -107,7 +110,7 @@ def get_following_list(q2):
 
     while True:
         driver.execute_script("arguments[0].scrollTo(0, arguments[0].scrollHeight);", dialog)
-        time.sleep(2)
+        time.sleep(SCROLL_PAUSE)
 
         new_height = driver.execute_script("return arguments[0].scrollHeight;", dialog)
         if new_height == last_height:
