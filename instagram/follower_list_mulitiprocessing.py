@@ -98,7 +98,7 @@ def get_following_list(q2):
     follower_count= WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '#react-root > section > main > div > header > section > ul > li:nth-child(2) a > span'))
     ).text.replace(",","")
-    driver.find_element_by_css_selector('#react-root > section > main > div > header > section > ul > li:nth-child(2)').click()
+    driver.find_element_by_css_selector('#react-root > section > main > div > header > section > ul > li:nth-child(3)').click()
 
 
     dialog = driver.find_element_by_class_name("isgrP")
@@ -116,20 +116,20 @@ def get_following_list(q2):
 
     soup = BeautifulSoup(driver.page_source, 'lxml')
 
-    followers = soup.find_all('a', class_= '_0imsa')
+    followings = soup.find_all('a', class_= '_0imsa')
 
-    follower_list=[]
+    following_list=[]
 
-    for follower in followers:
-        follower_list.append(follower.text)
+    for following in followings:
+        following_list.append(following.text)
 
-    print(len(follower_list))
+    print(len(following_list))
     
     with open(os.path.join(BASE_DIR, 'following.json'), 'w+') as f:
-        for item in follower_list:
+        for item in following_list:
             f.write(item+' ')
 
-    q2.put(follower_list)
+    q2.put(following_list)
 
 
 if __name__ == "__main__":
@@ -143,10 +143,16 @@ if __name__ == "__main__":
 
     process_follower.start()
     process_following.start()
-
-    print(q1.get())
-    print(q2.get())    
     
+    process_follower.join()
+    process_following.join()
+
+    print(len(q1.get()))
+    print(len(q2.get()))
+
+    
+##    get_following_list(q2)
+##    print(len(q2.get()))
 
 
 
