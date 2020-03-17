@@ -9,185 +9,73 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from selenium.webdriver.common.by import By
+
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 from credential import config
 
-
-
-
-path = "Webdriver 경로를 입력합니다."
-driver = webdriver.Chrome('../util/chromedriver.exe')
-driver.get("http://www.instagram.com/")
-
-
-actionchains=ActionChains(driver)
-
-time.sleep(1)
-
-
-id=config.INSTAGRAM_CONFIG['id']
-pw=config.INSTAGRAM_CONFIG['pw']
-
-
-username = driver.find_element_by_name("username")
-username.send_keys(id)
-password = driver.find_element_by_name("password")
-password.send_keys(pw)
-
-login_btn = driver.find_element_by_class_name("L3NKy")
-
-
-login_btn.click()
-
-time.sleep(5)
-later_btn = driver.find_element_by_class_name("HoLwm")
-
-later_btn.click()
-
-follower_id='dream_cookk'
-
-
-driver.get("https://www.instagram.com/"+follower_id)
-
-time.sleep(3)
-
-driver.find_element_by_class_name("vBF20").click()
-
-
-first_post_xpath = '//*[@id="react-root"]/section/main/div/div[2]/article/div[1]/div/div[1]/div[1]/a/div[1]/div[2]'
-first_post = driver.find_element_by_class_name("eLAPa")
-
-
-
-actionchains.click(first_post).perform()
-driver.implicitly_wait(5) 
-##driver.get(driver.current_url)
-##driver.refresh()
-
-
-##post_like_btn_xpath='/html/body/div[4]/div[2]/div/article/div[2]/section[1]/span[1]'
-##post_like_btn=driver.find_element_by_xpath(post_like_btn_xpath)
-
-
-for i in range(10):
-    post_like_btn = driver.find_element_by_class_name("fr66n")
-    driver.find_element_by_class_name("fr66n").click()
+def get_driver():
+    driver = webdriver.Chrome('../util/chromedriver.exe')
+    driver.get("http://www.instagram.com/")
     time.sleep(1)
-    driver.find_element_by_class_name("coreSpriteRightPaginationArrow").click()
 
 
-
-##print(post_like_btn.get_attribute('innerHTML'))
-##actionchains.click(post_like_btn).perform()
-
+    id=config.INSTAGRAM_CONFIG['id']
+    pw=config.INSTAGRAM_CONFIG['pw']
 
 
-##entire = driver.find_element_by_class_name("cGcGK")
+    username = driver.find_element_by_name("username")
+    username.send_keys(id)
+    password = driver.find_element_by_name("password")
+    password.send_keys(pw)
+
+    login_btn = driver.find_element_by_class_name("L3NKy")
+
+
+    login_btn.click()
+
+    time.sleep(5)
+    later_btn = driver.find_element_by_class_name("HoLwm")
+
+    later_btn.click()
+
+    return driver
+
+def followLiker(id_list):
+    driver=get_driver()
+    id_list=['sanha_1.17']
+    driver.get("https://www.instagram.com/"+id_list[0])
+
+    time.sleep(2)
+
+##    follower_count= WebDriverWait(driver, 5).until(
+##        EC.presence_of_element_located((By.CSS_SELECTOR, '#react-root > section > main > div > header > section > ul > li:nth-child(2) a > span'))
+##    ).get_attribute("title").replace(",","")
 ##
-##source=driver.page_source
+##    print(follower_count)
 ##
-##soup = BeautifulSoup(source, 'lxml')
-##
-##
-##images = driver.find_elements_by_class_name("fr66n")
-##
+##    post_count= WebDriverWait(driver, 5).until(
+##        EC.presence_of_element_located((By.CSS_SELECTOR, '#react-root > section > main > div > header > section > ul > li:nth-child(1) a > span'))
+##    ).text.replace(",","")
 
-##print(like_btn.get_attribute('innerHTML'))
+##    driver.find_element_by_class_name("vBF20").click()
 
 
-
-####actionchains.double_click(images[0]).perform()
-####actionchains.double_click(images[1]).perform()
-##actionchains.double_click(images[2]).perform()
-##actionchains.double_click(images[3]).perform()
+    first_post_xpath = '//*[@id="react-root"]/section/main/div/div[2]/article/div[1]/div/div[1]/div[1]/a/div[1]/div[2]'
+    first_post = driver.find_element_by_class_name("eLAPa").click()
 
 
-##    like_btn_xpath='//*[@id="react-root"]/section/main/section/div[1]/div[1]/div/article['+str(i+1)+']/div[2]/section[1]/span[1]'
-##    like_btn=driver.find_element_by_xpath(like_btn_xpath)
-##    print(like_btn.get_attribute('innerHTML'))
-##    actionchains.click(like_btn).perform()
-##    time.sleep(10)
-
-
-##for image in images:
-##    actionchains.click(image).perform()
-##    print()
-##    print(image.get_attribute('innerHTML'))
-##    print('----------------------------------------')
-
-##
-##for like_btn in like_btns:
-##    like_btn.click()
-##    print(like_btn.get_attribute('innerHTML'))
-##    like_btn.clear()
-####    print()
-##    print('----------------------------------------')
-####    driver.execute_script("arguments[0].click();", like_btn)
-####    time.sleep(2)
-
-
-##like_btn.click()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-##
-##
-##
-#### python파일의 위치
-##BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-##
-##input_tag=input('입력하실 태그? ')
-##
-##req=requests.get('https://www.instagram.com/explore/tags/'+input_tag)
-##
-##
-##html = req.text
-##soup = BeautifulSoup(html, 'html.parser')
-##scripts = soup.find_all('script')
-##
-##data=""
-##
-##
-##
-##for script in scripts:
-##    if 'window._sharedData = ' in script.text:
-##        data=str(script.text.strip())
-##        index=data.index('=')
-##        data=data[index+1:len(data)-1].strip() 
-##
-##type(data)
-##
-##test= json.loads(data)
-##print(test['entry_data']['TagPage'][0]['graphql']['hashtag']['edge_hashtag_to_media']['count'])
-##
-##with open(os.path.join(BASE_DIR, 'result.json'), 'w+') as f:
-##    f.write(data)
+    driver.implicitly_wait(5)
     
+    for i in range(16):
+        post_like_btn = driver.find_element_by_class_name("fr66n")
+        driver.find_element_by_class_name("fr66n").click()
+        time.sleep(1)
+        ##수정 봐야 할 로직 range variable이 
+        driver.find_element_by_class_name("coreSpriteRightPaginationArrow").click()
 
+if __name__ == "__main__":
+    followLiker([])
 
-##my_titles = soup.select(
-##    'h3 > a'
-##    )
-
-##data = {}
-##
-##for title in my_titles:
-##    data[title.text] = title.get('href')
-##
-##with open(os.path.join(BASE_DIR, 'result.json'), 'w+') as json_file:
-##    json.dump(data, json_file)
-##
-##print(data)
