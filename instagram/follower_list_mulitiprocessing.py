@@ -57,9 +57,12 @@ def get_follower_list(q1):
     driver.get("https://www.instagram.com/geon__after")
     time.sleep(2)
 
+
     follower_count= WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '#react-root > section > main > div > header > section > ul > li:nth-child(2) a > span'))
-    ).text.replace(",","")
+    ).get_attribute("title").replace(",","")
+
+    
     driver.find_element_by_css_selector('#react-root > section > main > div > header > section > ul > li:nth-child(2)').click()
 
 
@@ -100,7 +103,8 @@ def get_following_list(q2):
 
     follower_count= WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '#react-root > section > main > div > header > section > ul > li:nth-child(2) a > span'))
-    ).text.replace(",","")
+    ).get_attribute("title").replace(",","")
+    
     driver.find_element_by_css_selector('#react-root > section > main > div > header > section > ul > li:nth-child(3)').click()
 
 
