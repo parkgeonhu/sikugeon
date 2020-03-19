@@ -20,7 +20,9 @@ from credential import config
 from multiprocessing import Pool, Process, Queue
 
 
-SCROLL_PAUSE=0.5
+SCROLL_PAUSE=1
+
+TARGET_ID='geon__after'
 
 
 def get_driver():
@@ -51,10 +53,10 @@ def get_driver():
     return driver
 
 
-def get_follower_list(q1):
+def get_follower_list(que):
     driver=get_driver()
     print(2)
-    driver.get("https://www.instagram.com/geon__after")
+    driver.get("https://www.instagram.com/"+TARGET_ID)
     time.sleep(2)
 
 
@@ -91,17 +93,15 @@ def get_follower_list(q1):
     for follower in followers:
         follower_list.append(follower.text)
 
-    print(len(follower_list))
+
+    time.sleep(1)
     
-    with open(os.path.join(BASE_DIR, 'follower.json'), 'w+') as f:
-        for item in follower_list:
-            f.write(item+' ')
 
-    q1.put(follower_list)
+    que.put(follower_list)
 
-def get_following_list(q2):
+def get_following_list(que):
     driver=get_driver()
-    driver.get("https://www.instagram.com/geon__after")
+    driver.get("https://www.instagram.com/"+TARGET_ID)
     time.sleep(2)
 
     follower_count= WebDriverWait(driver, 5).until(
@@ -136,13 +136,20 @@ def get_following_list(q2):
     for following in followings:
         following_list.append(following.text)
 
-    print(len(following_list))
-    
-    with open(os.path.join(BASE_DIR, 'following.json'), 'w+') as f:
-        for item in following_list:
-            f.write(item+' ')
 
-    q2.put(following_list)
+    time.sleep(1)
+    
+    que.put(following_list)
+
+
+
+
+def export_data(data, name):
+    with open(os.path.join(BASE_DIR, name), 'w+') as f:
+        for item in data:
+            f.write(item+' ')
+    
+    
 
 
 if __name__ == "__main__":
@@ -156,28 +163,24 @@ if __name__ == "__main__":
 
     process_follower.start()
     process_following.start()
+
     
     process_follower.join()
     process_following.join()
 
-    followers=set(q1.get())
-    followings=set(q2.get())
-
-##    print("내가 맞팔 하지 않음 : ", followers-followings)
-##    print("상대가 맞팔 하지 않음 : ", followers-followings)
-
-    with open(os.path.join(BASE_DIR, '1.json'), 'w+') as f:
-        for item in list(followers-followings):
-            f.write(item+' ')
-
-    with open(os.path.join(BASE_DIR, '2.json'), 'w+') as f:
-        for item in list(followings-followers):
-            f.write(item+' ')
     
+    followers=q1.get()
+    followings=q2.get()
 
+
+    export_data(followers, 'followers.txt')
+    export_data(followings, 'followings.txt')
+
+    followers_set=set(followers)
+    followings_set=set(followings)
     
-##    get_following_list(q2)
-##    print(len(q2.get()))
+    export_data(followers_set-followings_set, '1.txt')
+    export_data(followings_set-followers_set, '2.txt')
 
 
 

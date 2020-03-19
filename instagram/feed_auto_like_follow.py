@@ -69,12 +69,12 @@ def followLiker(id_list):
 
     driver.implicitly_wait(5)
     
-    for i in range(16):
-        post_like_btn = driver.find_element_by_class_name("fr66n")
-        driver.find_element_by_class_name("fr66n").click()
-        time.sleep(1)
-        ##수정 봐야 할 로직 range variable이 
-        driver.find_element_by_class_name("coreSpriteRightPaginationArrow").click()
+##    for i in range(16):
+##        post_like_btn = driver.find_element_by_class_name("fr66n")
+##        driver.find_element_by_class_name("fr66n").click()
+##        time.sleep(1)
+##        ##수정 봐야 할 로직 range variable이 
+##        driver.find_element_by_class_name("coreSpriteRightPaginationArrow").click()
 
 if __name__ == "__main__":
     followLiker([])
