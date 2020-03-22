@@ -145,3 +145,5 @@ cython_debug/
 media
 static
 credential
+instagram/list_parsing/
+.idea/*
