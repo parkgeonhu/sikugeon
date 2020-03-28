@@ -16,30 +16,23 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-from credential import config
-from multiprocessing import Pool, Process, Queue
-
-
-SCROLL_PAUSE=1
-
-TARGET_ID='sikugeon'
 
 
 def get_driver():
 
     options = webdriver.ChromeOptions()
-##    options.add_argument('headless')
-##    options.add_argument('window-size=1920x1080')
-##    options.add_argument("disable-gpu")
-##
-##    # UserAgent값을 바꿔줍시다!
-##    options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
-##    options.add_argument("lang=ko_KR")
+    options.add_argument('headless')
+    options.add_argument('window-size=1920x1080')
+    options.add_argument("disable-gpu")
+
+    # UserAgent값을 바꿔줍시다!
+    options.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
+    options.add_argument("lang=ko_KR")
    
     driver = webdriver.Chrome('../util/chromedriver.exe', options=options)
 
-##    driver.get('about:blank')
-##    driver.execute_script("Object.defineProperty(navigator, 'plugins', {get: function() {return[1, 2, 3, 4, 5];},});")
+    driver.get('about:blank')
+    driver.execute_script("Object.defineProperty(navigator, 'plugins', {get: function() {return[1, 2, 3, 4, 5];},});")
  
     driver.get("http://kko.to/ryCuEQw0o")
     time.sleep(5)
