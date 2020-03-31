@@ -45,9 +45,21 @@ def get_sikugeon_list():
     dialog= WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, '#other\.favorite > ul'))
         )
+
+    print(dialog.get_attribute('innerHTML'))
     soup = BeautifulSoup(dialog.get_attribute('innerHTML'), 'lxml')
 
     entire = soup.find_all('a', class_= 'link_txt')
+
+    test = soup.find_all('div', class_= 'FavoriteInformationBundle')
+
+    for entity in test:
+        temp = BeautifulSoup(str(entity), 'lxml')
+        address= temp.find('span', class_= 'desc_region')
+        name=temp.find('a', class_= 'link_txt')
+        print(str(name.text)+" "+str(address.text))
+   
+##    stores_address =soup.find_all('span', class_= 'link_txt')
 
     places=[]
 
@@ -55,7 +67,7 @@ def get_sikugeon_list():
         print(place.text)
         places.append(place.text)
     print(len(places))
-##    print(dialog.get_attribute('innerHTML'))
+
 
 
 
