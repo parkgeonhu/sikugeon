@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from credential import config
 
 query=input('입력하실 태그? ')
-url = 'https://dapi.kakao.com/v2/local/search/keyword.json?query='+query
+url = 'https://dapi.kakao.com/v2/local/search/address.json?query='+query
 headers = {'Authorization':'KakaoAK '+config.KAKAO_CONFIG['token']}
 
 print(headers)

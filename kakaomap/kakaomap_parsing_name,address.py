@@ -47,26 +47,40 @@ def get_sikugeon_list():
         )
 
     print(dialog.get_attribute('innerHTML'))
+    
     soup = BeautifulSoup(dialog.get_attribute('innerHTML'), 'lxml')
 
-    entire = soup.find_all('a', class_= 'link_txt')
+    stores = soup.find_all('div', class_= 'FavoriteInformationBundle')
 
-    test = soup.find_all('div', class_= 'FavoriteInformationBundle')
 
-    for entity in test:
-        temp = BeautifulSoup(str(entity), 'lxml')
+    sikugeon=[]
+    for store in stores:
+        temp = BeautifulSoup(str(store), 'lxml')
         address= temp.find('span', class_= 'desc_region')
         name=temp.find('a', class_= 'link_txt')
-        print(str(name.text)+" "+str(address.text))
-   
-##    stores_address =soup.find_all('span', class_= 'link_txt')
+        detail=temp.find('p', class_= 'desc_detail')
 
+        memo=""
+        if detail is not None:
+            memo=detail.text
+            
+        data={
+            'name' : name.text,
+            'address' : address.text,
+            'memo' : memo
+            }
+        sikugeon.append(data)
+
+    
+    for store in sikugeon:
+        print(store.get('name')+' '+store.get('address')+' '+store.get('memo'))
+    
     places=[]
-
-    for place in entire:
-        print(place.text)
-        places.append(place.text)
-    print(len(places))
+##
+##    for place in entire:
+##        print(place.text)
+##        places.append(place.text)
+##    print(len(places))
 
 
 
