@@ -5,6 +5,8 @@ import json
 import sys
 import os
 
+    
+
 
 def get_next_page(query_hash, user_id, has_next_page, end_cursor, payload):
     if has_next_page is False:
@@ -15,6 +17,7 @@ def get_next_page(query_hash, user_id, has_next_page, end_cursor, payload):
         temp = json.loads(req.text)
         timeline=temp['data']['user']['edge_owner_to_timeline_media']['edges']
         for post in timeline:
+            review_url=post['node']['shortcode']
             text=post['node']['edge_media_to_caption']['edges'][0]['node']['text']
             pic_url=post['node']['display_url']
             tags=''
@@ -22,6 +25,7 @@ def get_next_page(query_hash, user_id, has_next_page, end_cursor, payload):
             if idx != -1:
                 tags=text[idx:]
                 data={
+                    'review_url' : review_url,
                     'pic_url' : pic_url,
                     'tags' : tags
                 }
@@ -47,19 +51,21 @@ def get_sikugeon_list():
 
 
     for post in profile['graphql']['user']['edge_owner_to_timeline_media']['edges']:
+        review_url=post['node']['shortcode']
         text=post['node']['edge_media_to_caption']['edges'][0]['node']['text']
+        pic_url=post['node']['display_url']
     
         tags=''
         idx=text.find('#식후건')
 
         if idx != -1:
             tags=text[idx:]
-
-        data={
-            'pic_url' : post['node']['display_url'],
-            'tags' : tags
-        }
-        payload.append(data)
+            data={
+                'review_url' : review_url,
+                'pic_url' : pic_url,
+                'tags' : tags
+            }
+            payload.append(data)
 
 
     print(profile['graphql']['user']['id'])
@@ -78,7 +84,43 @@ def get_sikugeon_list():
 
     with open(os.path.join(BASE_DIR, 'result.json'), 'w+') as f:
         f.write(str(payload))
+    #[{'pic_url':' ','tag':' '},,,]
+    return payload
+
+
+def get_stores(posts: list):
+    stores=[]
+    for post in posts:
+        tags=post['tags'].split(' ')
+        # #식후건_남영동_모범식당 #식후건_메모_example
+        place=tags[0].split('_')
+        query=place[1]+' '+place[2]
+        pic_url=post['pic_url']
+        review_url=post['review_url']
+        data={
+            'review_url' : review_url,
+            'query' : query,
+            'pic_url' : pic_url
+        }
+        stores.append(data)
+        
+    return stores
+
+
 
 
 if __name__ == '__main__':
-    get_sikugeon_list()
+    payload=get_sikugeon_list()
+    stores=get_stores(payload)
+    print(stores)
+
+
+
+
+
+
+
+
+
+
+    
